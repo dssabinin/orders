@@ -20,19 +20,19 @@ public class ProductController {
     @ApiOperation(value = "Сохранение товара", response = Sale.class)
     @PostMapping("add")
     public Product createProducts(@RequestParam String name) {
-        return null;
+        return productsService.createProduct(name);
     }
 
     @ApiOperation(value = "Получение товара", response = Product.class)
     @GetMapping("get")
     public Product getProduct(@RequestParam Long id) {
-        return null;
+        return productsService.getProduct(id);
     }
 
     @ApiOperation(value = "Получение списка товаров")
     @GetMapping("get-all")
     public Iterable<Product> getProducts() {
-        return null;
+        return productsService.getProducts();
     }
 
 

@@ -22,7 +22,7 @@ public class Sale {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private Client client;
     @ToString.Exclude
-    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL )
+    @OneToMany(cascade = CascadeType.ALL )
     private List<Product> products;
     private Integer sended;
 
