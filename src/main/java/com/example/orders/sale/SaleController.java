@@ -33,4 +33,23 @@ public class SaleController {
     public Iterable<Sale> getOrders() {
         return saleService.getAllOrders();
     }
+
+    @ApiOperation(value = "Получение заказов клиента")
+    @GetMapping("client-orders")
+    public Iterable<Sale> getClientOrders(@RequestParam Long clientId) {
+        return saleService.getClientOrders(clientId);
+    }
+
+    @ApiOperation(value = "Добавление товара в заказ")
+    @PutMapping("add-product")
+    public Sale addProduct(@RequestParam Long orderId,
+                               @RequestParam Long productId) {
+        return saleService.addProduct(orderId, productId);
+    }
+
+    @ApiOperation(value = "Отправляем заказ")
+    @PutMapping("send")
+    public Sale send(@RequestParam Long orderId) {
+        return saleService.send(orderId);
+    }
 }

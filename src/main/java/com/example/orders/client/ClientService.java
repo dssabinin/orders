@@ -23,4 +23,8 @@ public class ClientService {
         return clientRepo.save(client);
     }
 
+    public Client getClient(Long clientId) {
+        return clientRepo.findById(clientId).orElseThrow();
+    }
+
 }
