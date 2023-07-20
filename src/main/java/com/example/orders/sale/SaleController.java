@@ -9,47 +9,41 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "Заказы",  tags={"Заказы"})
 @Slf4j
 @RestController
-@RequestMapping("orders")
+@RequestMapping("")
 public class SaleController {
 
     @Autowired
     private SaleService saleService;
 
     @ApiOperation(value = "Сохранение заказа", response = Sale.class)
-    @PostMapping("add")
+    @PostMapping("orders")
     public Sale createOrder(@RequestParam String orderName,
-                            @RequestParam String clientAdress,
+                            @RequestParam String clientAddress,
                             @RequestParam Long clientId) {
-        return saleService.createOrder(orderName, clientAdress, clientId);
+        return saleService.createOrder(orderName, clientAddress, clientId);
     }
     @ApiOperation(value = "Получение заказа", response = Sale.class)
-    @GetMapping("get")
-    public Sale getOrder(@RequestParam Long orderId) {
-        return saleService.getOrder(orderId);
+    @GetMapping("orders/{id}")
+    public Sale getOrder(@PathVariable Long id) {
+        return saleService.getOrder(id);
     }
 
-    @ApiOperation(value = "Получение заказа")
-    @GetMapping("get-all")
-    public Iterable<Sale> getOrders() {
-        return saleService.getAllOrders();
-    }
-
-    @ApiOperation(value = "Получение заказов клиента")
-    @GetMapping("client-orders")
-    public Iterable<Sale> getClientOrders(@RequestParam Long clientId) {
-        return saleService.getClientOrders(clientId);
+    @ApiOperation(value = "Получение списка заказов")
+    @GetMapping("orders")
+    public Iterable<Sale> getOrders(@RequestParam(required = false) Long clientId) {
+        return saleService.getOrders(clientId);
     }
 
     @ApiOperation(value = "Добавление товара в заказ")
-    @PutMapping("add-product")
-    public Sale addProduct(@RequestParam Long orderId,
+    @PostMapping("orders/{id}/products")
+    public Sale addProduct(@PathVariable Long id,
                                @RequestParam Long productId) {
-        return saleService.addProduct(orderId, productId);
+        return saleService.addProduct(id, productId);
     }
 
     @ApiOperation(value = "Отправляем заказ")
-    @PutMapping("send")
-    public Sale send(@RequestParam Long orderId) {
-        return saleService.send(orderId);
+    @PatchMapping("orders/{id}/sended")
+    public Sale send(@PathVariable Long id) {
+        return saleService.send(id);
     }
 }

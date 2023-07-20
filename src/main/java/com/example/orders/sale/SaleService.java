@@ -54,4 +54,12 @@ public class SaleService {
         sale.setSended(1);
         return saleRepo.save(sale);
     }
+
+    public Iterable<Sale> getOrders(Long clientId) {
+        if (clientId==null) {
+            return getAllOrders();
+        } else {
+            return getClientOrders(clientId);
+        }
+    }
 }

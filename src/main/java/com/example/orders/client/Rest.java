@@ -21,9 +21,9 @@ public class Rest {
     }
 
     public Client getClient(Long clientId) {
-        UriBuilder uriBuilder = UriComponentsBuilder.fromUriString("http://localhost:8090/clients/get");
-        uriBuilder.queryParam("clientId",clientId);
-        URI uri = uriBuilder.build();
+        UriBuilder uriBuilder = UriComponentsBuilder.fromUriString("http://localhost:8090/clients/{id}");
+        //uriBuilder.queryParam("clientId",clientId);
+        URI uri = uriBuilder.build(clientId);
         System.out.println(uri.toString());
         Client response = this.restTemplate.getForObject(uri, Client.class);
         return response;
