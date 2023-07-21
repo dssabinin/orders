@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SaleService {
@@ -37,7 +38,7 @@ public class SaleService {
         return saleRepo.findAllByClient(clientService.getClient(clientId));
     }
 
-    public Sale addProduct(Long orderId, Long productId) {
+    public Sale putProduct(Long orderId, Long productId) {
         Sale sale = saleRepo.findById(orderId).orElseThrow();
         Product product = productRepo.findById(productId).orElseThrow();
         List<Product> products = sale.getProducts();
@@ -45,7 +46,9 @@ public class SaleService {
             products=new ArrayList<>();
             sale.setProducts(products);
         }
-        products.add(product);
+        if (!products.contains(product)) {
+            products.add(product);
+        }
         return saleRepo.save(sale);
     }
 
@@ -62,4 +65,25 @@ public class SaleService {
             return getClientOrders(clientId);
         }
     }
+
+    public Sale putGift(String clientAddress, Long clientId) {
+        Client client = clientService.saveClient(clientId, clientAddress);
+        Sale sale = putGift(client);
+        return send(sale.getId());
+    }
+
+    /**делаем подарок*/
+    private Sale putGift(Client client) {
+        Optional<Sale> saleOptional = saleRepo.findByClientAndName(client, "gift");
+        if (saleOptional.isPresent()) {
+            return saleOptional.get();
+        }
+        Sale sale = new Sale("gift", client);
+        List<Product> products = new ArrayList<>();
+        products.add(productRepo.findByName("gift").orElseThrow());
+        sale.setProducts(products);
+        return saleRepo.save(sale);
+    }
+
+
 }

@@ -15,13 +15,14 @@ public class SaleController {
     @Autowired
     private SaleService saleService;
 
-    @ApiOperation(value = "Сохранение заказа", response = Sale.class)
+    @ApiOperation(value = "Добавление заказа", response = Sale.class)
     @PostMapping("orders")
     public Sale createOrder(@RequestParam String orderName,
                             @RequestParam String clientAddress,
                             @RequestParam Long clientId) {
         return saleService.createOrder(orderName, clientAddress, clientId);
     }
+
     @ApiOperation(value = "Получение заказа", response = Sale.class)
     @GetMapping("orders/{id}")
     public Sale getOrder(@PathVariable Long id) {
@@ -35,10 +36,10 @@ public class SaleController {
     }
 
     @ApiOperation(value = "Добавление товара в заказ")
-    @PostMapping("orders/{id}/products")
-    public Sale addProduct(@PathVariable Long id,
+    @PutMapping("orders/{id}/products")
+    public Sale putProduct(@PathVariable Long id,
                                @RequestParam Long productId) {
-        return saleService.addProduct(id, productId);
+        return saleService.putProduct(id, productId);
     }
 
     @ApiOperation(value = "Отправляем заказ")
@@ -46,4 +47,12 @@ public class SaleController {
     public Sale send(@PathVariable Long id) {
         return saleService.send(id);
     }
+
+    @ApiOperation(value = "Отправка подарка клиенту")
+    @PutMapping("orders/gift")
+    public Sale putGift(@RequestParam String clientAddress,
+                        @RequestParam Long clientId) {
+        return saleService.putGift(clientAddress, clientId);
+    }
+
 }
